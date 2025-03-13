@@ -41,4 +41,9 @@ return [
         'redirect_url' => env('WORKOS_REDIRECT_URL'),
     ],
 
+    'spotify' => [
+        'client_id' => env('SPOTIFY_CLIENT_ID'),
+        'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+    ],
+
 ];
