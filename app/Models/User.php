@@ -33,6 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'workos_id',
         'remember_token',
+        'spotify_access_token',
+        'spotify_refresh_token',
+        'spotify_expires_at',
     ];
 
     /**
@@ -56,6 +59,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'spotify_access_token' => 'encrypted',
+            'spotify_refresh_token' => 'encrypted',
+            'spotify_expires_at' => 'datetime',
         ];
+    }
+
+    public function updateSpotifyOAuthDetails(
+        string $accessToken,
+        string $refreshToken,
+        \DateTimeImmutable $expiresAt
+    ): void {
+        $this->spotify_access_token = $accessToken;
+        $this->spotify_refresh_token = $refreshToken;
+        $this->spotify_expires_at = $expiresAt;
+
+        $this->save();
+    }
+
+    public function isConnectedToSpotify(): bool
+    {
+        return $this->spotify_access_token
+            && $this->spotify_refresh_token
+            && $this->spotify_expires_at;
     }
 }
